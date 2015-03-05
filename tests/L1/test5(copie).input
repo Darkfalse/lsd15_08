@@ -1,0 +1,14 @@
+{ ce programme vise a tester les assignations avec variables (verif de types)}
+
+program test;
+var
+i:integer;
+b:boolean;
+begin
+i:=i;
+i:=i*i;
+i := i + i;
+b := not b;
+b := not not b;
+b := true and i
+end.

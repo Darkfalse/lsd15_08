@@ -1,0 +1,21 @@
+program test2101;
+var
+   x : integer;
+   y : integer;
+   i : integer;
+   max : integer;
+begin
+   read max;
+   x := 0;
+   write x;
+   y := 1;
+   write y;
+   i := 2;
+   while (i < max)
+   do
+      y := y + x;
+      x := y - x;
+      write y;
+      i := i + 1
+   od
+end.

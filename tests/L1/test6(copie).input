@@ -1,0 +1,15 @@
+{ ce programme vise a tester les read et write (avec verif de type)}
+
+program test;
+var
+i:integer;
+b:boolean;
+begin
+read i;
+read b;
+write i;
+write 5;
+write b;
+write (i + 2 *b); {2 * un boolean?}
+write (b and not b and true)
+end.

@@ -1,0 +1,19 @@
+program test3101;
+var
+    i : integer;
+
+procedure p0();
+    var
+    begin
+      i := 1             
+    end;
+
+procedure p1();
+  var
+  begin
+    skip
+  end;
+
+begin
+    write i
+end.

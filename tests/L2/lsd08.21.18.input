@@ -1,0 +1,20 @@
+program test3101;
+var
+  procedure p0();
+  var
+    i : boolean;
+  begin
+    i := true           
+  end;
+
+  procedure p1();
+  var
+    i : integer;
+  begin
+    i := 0;
+  end;
+
+begin
+  p1();
+  p0();
+end.

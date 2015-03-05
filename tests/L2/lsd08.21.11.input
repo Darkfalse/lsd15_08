@@ -1,0 +1,32 @@
+program test3101;
+var
+    i : integer;
+
+procedure p0();
+    var
+      i : boolean;
+    begin
+      i := true;
+      skip             
+    end;
+
+procedure p1();
+  var
+  begin
+    p0()
+  end;
+
+procedure p2();
+  var
+  begin
+    p1({Un commentaire n'importe ou!});
+    p0()
+  end;
+
+begin
+    i := 1;
+    p2();
+    p1();
+    p0();
+    write i
+end.

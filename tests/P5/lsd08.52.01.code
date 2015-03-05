@@ -1,0 +1,11 @@
+program test6101;
+var
+	ti1	: array[1,4] of integer;
+	ti2 	: array[0,0] of integer;
+	ti3 	: array[-4,-1] of integer;
+	ti4 	: array[-2,2] of integer;
+	tb 	: array[1,4] of boolean;
+begin
+	skip
+end.
+

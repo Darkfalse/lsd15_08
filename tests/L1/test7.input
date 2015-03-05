@@ -1,0 +1,12 @@
+{ ce programme vise a tester les if}
+
+program test;
+var
+i:integer;
+b:boolean;
+begin
+if (true) then i := 5 else skip fi;
+if (false) then i := 4; b := false else b:=true; i:=5 fi;
+if (i = 9)then skip else skip fi;
+skip
+end.

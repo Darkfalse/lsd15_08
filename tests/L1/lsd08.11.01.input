@@ -1,0 +1,21 @@
+program test2101;
+var
+   int1 : integer;
+   int2 : integer;
+   bool1 : boolean;
+   bool2 : boolean;
+   bool3 : boolean;
+   bool4 : boolean;
+   bool5 : boolean;
+begin
+   bool1 := true;
+   bool2 := not(true and (false or true));
+   bool3 := not(bool1 and bool2);
+   bool4 := bool1 or (int1 <int2);
+   bool5 := false and (int2=int1);
+   if bool1 then write (1) else write(-1) fi;
+   if bool2 then write (2) else write(-2) fi;
+   if bool3 then write (3) else write(-3) fi;
+   if bool4 then write (4) else write(-4) fi;
+   if bool5 then write (5) else write(-5) fi
+end.

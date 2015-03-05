@@ -1,0 +1,19 @@
+{ ce programme vise a tester les while}
+
+program test;
+var
+i:integer;
+b:boolean;
+begin
+while (i=5) do {i n'est pas un booleen}
+i := i +1
+od;
+while (b) do
+b := not b;
+g := i+1 {g non déclaré}
+od;
+while (i>-5) do
+skip
+od;
+skip
+end.

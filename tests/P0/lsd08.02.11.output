@@ -1,0 +1,6 @@
+WRITE : int 2
+
+READ : WRITE : int 1
+
+READ : WRITE : int 1
+

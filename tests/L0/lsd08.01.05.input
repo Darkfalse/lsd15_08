@@ -1,0 +1,13 @@
+program test1105;
+var
+   int1 : integer;
+   int2 : integer;
+   bool1 : boolean;
+   bool2 : boolean;
+begin
+   bool1 := false;
+   bool2 := true;
+   int1 := 7;
+   int2 := 37;
+   bool1 := not bool2 and int1 < int2
+end.

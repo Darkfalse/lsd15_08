@@ -1,0 +1,28 @@
+program test3101;
+var
+    i : integer;
+
+procedure p0();
+    var
+      i : boolean;
+    begin
+      i := true;
+      skip             
+    end;
+
+procedure p1();
+  var
+  begin
+    p0()
+  end;
+
+procedure p2();
+  var
+  begin
+  end;
+
+begin
+    i := 1;
+    p1();
+    write i
+end.

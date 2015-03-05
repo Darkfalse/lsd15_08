@@ -1,0 +1,11 @@
+{ Ce programme vise a tester l'affectation de variables }
+
+program test;
+var
+               i:integer;
+i2                      :integer                       ;
+integer360050:                                 integer;
+5bool1:boolean;
+begin
+skip
+end.

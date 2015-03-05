@@ -1,0 +1,30 @@
+program test3101;
+var
+    val : integer;
+    ltz : integer;
+    gtz : integer;
+
+procedure while();
+    var
+    begin
+        if val > 0  
+              then gtz := gtz + 1 
+              else if val < 0 
+                         then ltz := ltz+1
+                         else skip
+                         fi
+              fi;     
+    read val               
+    end;
+
+
+begin
+    ltz := 0;
+    gtz := 0;
+    read val;
+    while not(val=0) do
+              while()
+              od;
+    write ltz;
+    write gtz
+end.

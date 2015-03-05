@@ -1,0 +1,21 @@
+program test4101;
+var
+    repetition :integer;
+    nombre : integer;
+    fact : integer;
+
+
+procedure p1();
+var
+  procedure p1();
+  var
+  begin
+    skip
+  end;
+begin
+   skip
+end;
+
+begin
+  skip
+end.

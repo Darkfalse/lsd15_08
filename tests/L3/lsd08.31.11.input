@@ -1,0 +1,37 @@
+program test1101;
+var
+  procedure p1 (); 
+  var
+    procedure p11();
+    var
+      procedure p111();
+      var
+      begin
+        skip
+      end;
+    begin
+      skip
+    end;
+    procedure p12();
+    var
+      procedure p121();
+      var
+      begin
+        p12();
+        p121();
+        p11();
+        p1()
+      end;
+    begin
+      p121();
+      p11();
+      p1()
+    end;
+  begin
+    p11();
+    p12();
+    p1()
+  end;
+begin
+  p1()
+end.

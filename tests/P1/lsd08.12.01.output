@@ -1,0 +1,10 @@
+WRITE : int 1
+
+WRITE : int -2
+
+WRITE : int 3
+
+WRITE : int 4
+
+WRITE : int -5
+

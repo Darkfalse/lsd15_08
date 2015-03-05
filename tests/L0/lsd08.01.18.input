@@ -1,0 +1,8 @@
+program test1118;
+var
+   int1 : integer;
+   bool1 : boolean;
+begin
+   bool1 := true;
+   int1:= bool1
+end.

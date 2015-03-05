@@ -1,0 +1,12 @@
+program test3105;
+var
+
+procedure rien();
+    var
+    begin
+       skip
+    end;
+
+begin
+    rien()
+end.

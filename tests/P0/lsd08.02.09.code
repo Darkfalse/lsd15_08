@@ -1,0 +1,14 @@
+program test1101;
+var
+  x : integer;
+  y : integer;
+begin
+  x := 1;
+  y := 2 + 3 * x; {y = 3 * 1 + 2 = 3 + 2 = 5}
+  y := y - x;     {y = 4 - 1 =4}
+  y := -y;        {y = -4}
+  y := -x - y;    {y = -1 -(-4) = -1 + 4 = 3}
+  write (y - x);
+  write x;
+  write y
+end.

@@ -1,0 +1,77 @@
+program palindrome ;
+{
+   Note : 
+      \in représente "appartient à", Nat est l'ensemble des nombres naturels,
+      \forall représente "pour tout" et out/in dénotent les deux flux (sortie/entrée).
+
+  Pré : 	
+    le flux d'entrée "in" commence par un entier positif ou nul, x
+    qui est inférieur ou égal à 100.
+    Après cet entier, il contient au moins x entiers.
+    Donc, in = x . s1 . ... sx . e, avec e \in Nat* et x,s1,..,sx \in N
+  Post :   
+    le flux de sortie contient 1 ssi s1 . ... . sx est un palindrome, càd
+        (a) x <= 1 
+    ou (b) s1 = sx et s2 ... s(x-1) est un palindrome
+         càd \forall i : 1 <= i <=x :  si = s(l-i+1)
+}
+
+var 
+   t : array [1,100] of integer;
+   l : integer;
+   b : boolean;
+{
+  Pré :	
+    le flux d'entrée commence par un entier positif ou nul, x
+    qui est inférieur ou égal à 100.
+    Ensuite, il contient au moins x entiers.
+    Donc, in = x . s1 . ... sx . e, avec e \in Nat* et x,s1,..,sx \in Nat
+  Post : l = x et \forall j : 1 <= j <= l : t[j] = sj et in = e
+}
+procedure filltab(var t : array[1,100] of integer, var l : integer);
+var i : integer;
+begin
+  read l; {l = x}
+  if l > 0 then
+    i:= 1;
+    {Inv: forall j : 1 <= j < i: t[j] = sj }
+    while i < l or i = l do
+      read t[i];
+      i := i +1
+    od
+  else
+    skip
+  fi
+end;
+
+
+{
+  Pré : forall j : 1 <= j <= l :  t[j] est défini et l >= 0 et l = l0
+  Post : t inchangé; ispal=true ssi t[1]...t[l] est un palindrome		
+}
+procedure ispalindrome(var t : array[1,100] of integer, l : integer, var ispal : boolean);
+var i : integer;
+begin
+  ispal := true;
+  i := 1;
+  {Inv:  
+      forall j : 1 <= j < i : t[j] = t[l0 - j + 1] 
+      l = l0 - i + 1
+  }
+  while (i < l or i = l) and ispal do
+    ispal := t[i] = t[l];
+    i := i + 1;
+    l := l - 1
+  od
+end; 
+
+begin
+  filltab(t,l);
+  ispalindrome(t,l,b);
+  if b then
+    write 1
+  else
+    write 0
+  fi
+end.
+

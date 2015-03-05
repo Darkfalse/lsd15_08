@@ -1,0 +1,20 @@
+READ : WRITE : int 0
+
+WRITE : int 1
+
+WRITE : int 1
+
+WRITE : int 2
+
+WRITE : int 3
+
+WRITE : int 5
+
+WRITE : int 8
+
+WRITE : int 13
+
+WRITE : int 21
+
+WRITE : int 34
+

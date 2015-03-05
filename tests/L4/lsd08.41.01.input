@@ -1,0 +1,32 @@
+program test5101;
+var
+ x : integer;
+ y : integer;
+ z : integer;
+
+procedure p1( a : integer, var b : integer);
+var
+   c : integer;
+   
+   begin
+       c:=27;
+       a:=a+3;
+       b:=b+3;
+       c:=c+3;
+       z:=z+3
+   end;
+
+begin
+ x:=27;
+ y:=27;	
+ z:=27;			
+ p1(x,y);
+ write x;
+ write y;
+ write z
+end.
+
+         
+
+
+

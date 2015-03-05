@@ -1,0 +1,91 @@
+program test3108;
+var 
+    pi1 : integer;
+    pi2 : integer;
+    pi3 : integer;
+    pb1 : boolean;
+    pb2 : boolean;
+    pb3 : boolean;
+
+procedure procA();
+var pi2 : integer;
+    pi3 : boolean;
+    pb2 : boolean;
+    pb3: integer;
+    ai1 : integer;
+    ai2 : integer;
+    ab1 : boolean;
+    ab2 : boolean;
+
+begin
+    pi1:= pi1 * 10;
+    pi2:= 20;
+    pi3:= false;
+    pb1:= pi3;
+    pb2:= true;
+    pb3:= -33;
+    ai1:=11;
+    ai2:=22;
+    ab1:=false;
+    ab2:= pb1;
+
+     write pi1;
+     write pi2;
+     if pi3 then write 30 else write -30 fi;
+     if pb1 then write 10 else write -10 fi;
+     if pb2 then write 20 else write -20 fi;
+     write pb3;
+     write ai1;
+     write ai2;
+     if ab1 then write 41 else write -41 fi;
+     if ab2 then write 51 else write -51 fi
+
+end;
+
+procedure procB();
+var
+     ai1 : integer;
+     ai2 : boolean;
+     ab1 : boolean;
+     ab2 : integer;
+     bi :integer;
+     bb : boolean;
+
+begin
+    read ai1;
+    read ab2;
+    read bi;
+    if (ab2 +20 * pi1+10*pi2 = -2) then  write (88) else write (-88)fi;
+    ai2 := ai1>ab2;
+    ab1 := (pi3<ab2) or  pb3;
+    bb := bi=333;
+    if ai2 then write 100 else write -100 fi;
+    if ab1 then write 200 else write -200 fi;
+    if bb then  write 300 else write -300 fi
+end;
+
+procedure afficherglobal();
+var
+begin
+     write pi1;
+     write pi2;
+     write pi3;
+     if pb1 then write 1 else write -1 fi;
+     if pb2 then write 2 else write -2 fi;
+     if pb3 then write 3 else write -3 fi
+end;
+
+begin
+     pi1 := 1;
+     pi2 := 2;
+     pi3 := 3;
+     pb1 := true;
+     pb2 := false;
+     pb3 := true;
+     procA();
+     afficherglobal();
+     procB();
+     afficherglobal();
+     procA();
+     afficherglobal()
+end.

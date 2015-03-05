@@ -1,0 +1,35 @@
+program test4101;
+var
+    repetition :integer;
+    nombre : integer;
+    fact : integer;
+
+
+procedure factorielle();
+var
+begin
+   fact := fact * nombre;
+   nombre := nombre -1;
+   if nombre>1 then factorielle() else skip fi
+end;
+
+begin
+repetition := 0;
+while repetition < 5 do
+            fact:=1;
+            read nombre;
+            if not(nombre<0) 
+		   then if (nombre=0) 
+                               then skip	 
+                               else factorielle() 
+                               fi;
+                        write fact
+                   else skip
+                   fi;
+             repetition := repetition+1
+             od
+end.
+                                 
+
+
+              

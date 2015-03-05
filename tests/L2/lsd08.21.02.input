@@ -1,0 +1,14 @@
+program test3101;
+var
+    i : integer;
+
+procedure p0();
+    var
+      i : boolean;
+    begin
+      i := 1              
+    end;
+
+begin
+    print i
+end.

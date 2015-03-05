@@ -1,0 +1,28 @@
+program test7101;
+
+var
+ a : array[1,4] of integer;
+ valmax : integer;
+
+procedure Max(var t :array[1,4] of integer, var vm : integer);
+var
+ i : integer;
+begin
+ vm:=0;
+ i:=0;
+ while (i<4) do
+	 i:=i+1;
+	 if t[i] > vm then
+	  	vm:=t[i]
+	 else
+	  	skip
+	 fi
+ od
+end;
+
+begin
+ a[1]:=13;a[2]:=19;a[3]:=17;a[4]:=27;
+ Max(a,valmax);
+ write valmax
+end.
+

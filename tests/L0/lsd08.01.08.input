@@ -1,0 +1,12 @@
+program test1105;
+var
+   int1 : integer;
+   int2 : integer;
+   bool1 : boolean;
+   bool2 : boolean;
+begin
+   bool1 := false;
+   bool2 := true;
+   int1 := 1;
+   bool2 := bool2 > int1
+end.
