@@ -18,8 +18,9 @@ int num_lines=1;
 %option noyywrap
 
 id        [A-Za-z][A-Za-z0-9]*
-nbr       (0|[1-9][0-9]*)
+nbr       (0|-?[1-9][0-9]*)
 blank     [ \t]+
+comment   "{"[.*]"}"
 
 %%
 "program"    {return PROGRAM;}
@@ -76,6 +77,8 @@ blank     [ \t]+
 "\n"         {++num_lines;}
 
 {blank}      {/*On passe*/}
+
+{comment}    {/*On passe aussi*/}
 
 .            {
                 fprintf(stderr,"KO\n");

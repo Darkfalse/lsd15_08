@@ -89,10 +89,10 @@ FinInstr :        { $$ = NULL;}
 ;
 
 Expr : ExprI {$$ = $1;}
-     //Var   {$$ = $1;}
      | ExprB {$$ = $1;}
 ;
 
+//Expression Integer
 ExprI : Nb                 {$$ = $1;}
       | ExprI PLUS ExprI   {$$ = createNode(AT_OPADD, 0, NULL, $1, $3);} 
       | ExprI MINUS ExprI  {$$ = createNode(AT_OPSUB, 0, NULL, $1, $3);}
@@ -101,6 +101,7 @@ ExprI : Nb                 {$$ = $1;}
       | ExprI MODULO ExprI {$$ = createNode(AT_OPMOD, 0, NULL, $1, $3);}
 ;
 
+//Expression Boolean
 ExprB : BFALSE               {$$ = createNode(AT_FALSE, 0, yylval.sval, NULL, NULL);}
       | BTRUE                {$$ = createNode(AT_TRUE, 0, yylval.sval, NULL, NULL);}
       | ExprB AND ExprB      {$$ = createNode(AT_OPBAND, 0, NULL, $1, $3);}
@@ -119,9 +120,6 @@ Id : ID { $$ = createNode(AT_ID, 0, yylval.sval, NULL, NULL);}
 
 Nb : NB { $$ = createNode(AT_NB, yylval.ival, NULL, NULL, NULL);}
 ;
-
-//Var : VAR { $$ = createNode(AT_VAR, 0, yylval.sval, NULL, NULL);}
-//;
 
 %%
 
