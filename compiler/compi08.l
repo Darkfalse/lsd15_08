@@ -46,7 +46,6 @@ blank     [ \t]+
 "od"         {return OD;}
 "print"      {return PRINT;}
 "read"       {return READ;}
-"affect"     {return AFFECT;}
 
 "="          {return EQUAL;}
 "+"          {return PLUS;}
@@ -61,6 +60,7 @@ blank     [ \t]+
 ">"          {return GT;}
 "<"          {return ST;}
 "mod"        {return MODULO;}
+":="         {return AFFECT;}
 
 {id}         {
                 yylval.sval=(char*)calloc(strlen(yytext)+1,sizeof(char));

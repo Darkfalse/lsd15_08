@@ -14,7 +14,7 @@
 
 extern int num_lines;
 extern char* yytext;
-  
+
 // to avoid 'implicit definition'
 int yylex(void);
 int yyerror(char *str);
@@ -45,8 +45,7 @@ ASTTREE root;
 %left PLUS MINUS 
 %left TIMES
 %left LP RP
-
-%right AFFECT
+%left AFFECT
 
 %type <tval> Program CodeBloc DeclVars DeclVar Code Instruction FinInstr
 %type <tval> Expr ExprI ExprB EndIf Id Nb
@@ -72,13 +71,13 @@ Code :                  { $$ = NULL; }
      | Code Instruction { $$ = createNode(AT_CODE, 0, NULL, $1, $2);}
 ;
 
-Instruction : SKIP FinInstr                {$$ = NULL;}
-            | Id COLON EQUAL Expr FinInstr {$$ = createNode(AT_AFFEXPR, 0, NULL, $1, $4);}
-            | Id COLON EQUAL Id FinInstr   {$$ = createNode(AT_AFFID, 0, NULL, $1, $4);}
-            | READ ExprI FinInstr          {$$ = createNode(AT_OPREAD, 0, NULL, $2, NULL);}
-            | WRITE ExprI FinInstr         {$$ = createNode(AT_OPWRITE, 0, NULL, $2, NULL);}
-            | IF ExprB THEN EndIf          {$$ = createNode(AT_OPIF, 0, NULL, $2, $4);}
-            | WHILE Expr DO Code OD        {$$ = createNode(AT_OPWHILE, 0, NULL, $2, $4);}
+Instruction : SKIP FinInstr         {$$ = NULL;}
+            | Id AFFECT Expr FinInstr {$$ = createNode(AT_AFFEXPR, 0, NULL, $1, $4);}
+            | Id AFFECT Id FinInstr   {$$ = createNode(AT_AFFID, 0, NULL, $1, $4);}
+            | READ ExprI FinInstr   {$$ = createNode(AT_OPREAD, 0, NULL, $2, NULL);}
+            | WRITE ExprI FinInstr  {$$ = createNode(AT_OPWRITE, 0, NULL, $2, NULL);}
+            | IF ExprB THEN EndIf   {$$ = createNode(AT_OPIF, 0, NULL, $2, $4);}
+            | WHILE Expr DO Code OD {$$ = createNode(AT_OPWHILE, 0, NULL, $2, $4);}
 ;
 
 EndIf : Code FI           {$$ = createNode(AT_OPFI, 0, NULL, $1, NULL);}
@@ -89,8 +88,8 @@ FinInstr :        { $$ = NULL;}
          | CPOINT { $$ = NULL;}
 ;
 
-Expr :       {$$ = NULL;} //Var   {$$ = $1;}
-     | ExprI {$$ = $1;}
+Expr : ExprI {$$ = $1;}
+     //Var   {$$ = $1;}
      | ExprB {$$ = $1;}
 ;
 
@@ -139,7 +138,7 @@ int main()
   SYMTABLE sym;
 
   printf("; *** Compiler08_01\n");
-  printf("; *** Gr08 Mertens Xavier Motte Josue, 2015\n");
+  printf("; *** Gr08 Mertens Xavier Motte Josué, 2015\n");
   printf(";\n");
 
   printf(";*** BEGIN yyparse() ***\n");
