@@ -7,12 +7,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 #include "checker.h"
 #include "ast.h"
 
 extern void printTree(ASTTREE node);
 
-void error(const char* msg, ...){
+void errorMsg(const char* msg, ...){
     fprintf(stderr, "KO\n");
     fprintf(stderr, "Type error:");
     va_list args;
@@ -22,6 +23,8 @@ void error(const char* msg, ...){
     fprintf(stderr, "\n");
     exit(1);
 }
+
+ASTTREE nodeRoot = NULL;
 
 int getType(ASTTREE node){
     int t = node->type;
@@ -37,9 +40,15 @@ int getType(ASTTREE node){
     case AT_OPMUL:
     case AT_OPMOD:
         leftT = getVarType(node->left);
+        if(leftT == -2){
+            leftT = getTypeId(node->left);
+        }
         rightT = getVarType(node->right);
+        if(rightT == -2){
+            rightT = getTypeId(node->right);
+        }
         if(leftT != TYPE_INT || rightT != TYPE_INT){
-            error("Inccorect Int expression");
+            errorMsg("Inccorrect Int expression");
         }
         return TYPE_INT;
         break;
@@ -56,14 +65,14 @@ int getType(ASTTREE node){
         leftT = getVarType(node->left);
         rightT = getVarType(node->right);
         if(leftT != TYPE_BOOL || rightT != TYPE_BOOL){
-            error("Inccorect Bool expression");
+            errorMsg("Inccorrect Bool expression");
         }
         return TYPE_INT;
         break;
     case AT_OPBNOT:
         leftT = getVarType(node->left);
         if(leftT != TYPE_BOOL){
-            error("Inccorect Bool expression");
+            errorMsg("Inccorrect Bool expression");
         }
         return TYPE_INT;
         break;
@@ -72,23 +81,44 @@ int getType(ASTTREE node){
         leftT = getVarType(node->left);
         rightT = getVarType(node->right);
         if(leftT != rightT){
-            error("Inccorect Affect instruction");
+            errorMsg("Inccorrect Affect instruction");
         }
         return leftT;
         break;
     case AT_OPIF:
         leftT = getVarType(node->left);
         if(leftT != TYPE_BOOL){
-            error("Inccorect If condittion");
+            errorMsg("Inccorrect If condittion");
         }
         return TYPE_BOOL;
         break;
 
-    default:     error("Impossible to get type!!");
+    default:     return -1;
     }
 }
 
+int getTypeId(ASTTREE node){
+    int type = -1;
+    ASTTREE nodeTemp = nodeRoot;
+    while(nodeTemp){
+        if(node->type == AT_DECLINT && !(strcmp(nodeTemp->sval, node->sval))){
+            return TYPE_INT;
+        }
+        else if(node->type == AT_DECLBOOL && !(strcmp(nodeTemp->sval, node->sval))){
+            return TYPE_BOOL;
+        }
+        else{
+            type = getTypeId(node->left);
+        }
+        nodeTemp = nodeTemp->right;
+    }
+    return type;
+}
+
 void validType(ASTTREE node){
+    if(nodeRoot != NULL){
+        nodeRoot = node;
+    }
     while(node){
         getType(node);
         validType(node->left);

@@ -11,6 +11,7 @@
 #include "ast.h"
 #include "sym.h"
 #include "pcode.h"
+#include "checker.c"
 
 extern int num_lines;
 extern char* yytext;
@@ -126,7 +127,7 @@ int main()
   SYMTABLE sym;
 
   printf("; *** Compiler08_01\n");
-  printf("; *** Gr08 Mertens Xavier Motte Josué, 2015\n");
+  printf("; *** Gr08 Mertens Xavier Motte Josue, 2015\n");
   printf(";\n");
 
   printf(";*** BEGIN yyparse() ***\n");
@@ -153,6 +154,10 @@ int main()
   printf(";*** BEGIN printSymbolTable(..) +locations ***\n");
   printSymbolTable(sym);
   printf(";*** END printSymbolTable(..) +locations ***\n");
+
+  printf(";*** BEGIN validType(..) ***\n");
+  //validType(root);
+  printf(";*** END validType(..) ***\n");
 
   printf(";*** BEGIN PCodeGeneration ***\n");
   pcodeGenValue(root, sym);

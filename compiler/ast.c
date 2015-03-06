@@ -108,6 +108,10 @@ int getVarType(ASTTREE node)
 
   case AT_DECLINT:    return TYPE_INT; break;
   case AT_DECLBOOL:   return TYPE_BOOL; break;
+  case AT_NB:         return TYPE_INT; break;
+  case AT_TRUE:       return TYPE_BOOL; break;
+  case AT_FALSE:      return TYPE_BOOL; break;
+  case AT_ID:         return -2; break;
 
   default:            return -1;
   }

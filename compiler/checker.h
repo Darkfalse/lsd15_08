@@ -10,7 +10,8 @@
 #include "sym.h"
 #include "ast.h"
 
-void validType(ASTTREE node);
-int getType(ASTTREE node);
+extern void validType(ASTTREE node);
+extern int getType(ASTTREE node);
+extern int getTypeId(ASTTREE node);
 
 #endif
