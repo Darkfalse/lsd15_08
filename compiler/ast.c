@@ -78,7 +78,6 @@ char* humanReadableNodeType(int type)
   case AT_DECLBOOL: return "AT_DECLBOOL"; break;
   case AT_OPIF:     return "AT_OPIF"; break;
   case AT_OPWHILE:  return "AT_OPWHILE"; break;
-  case AT_OPFI:     return "AT_OPFI"; break;
   case AT_OPELSEFI: return "AT_OPELSEFI"; break;
   case AT_FALSE:    return "AT_FALSE"; break;
   case AT_TRUE:     return "AT_TRUE"; break;
@@ -94,10 +93,24 @@ char* humanReadableNodeType(int type)
   case AT_VAR:      return "AT_VAR"; break;
   case AT_AFFEXPR:  return "AT_AFFEXPR"; break;
   case AT_AFFID:    return "AT_AFFID"; break;
+  case AT_LINSTR:   return "AT_LINSTR"; break;
   case AT_ROOT:     return "AT_ROOT"; break;
 
   default :         return "??";
   }
+}
+
+char* getVarType(ASTTREE node)
+{
+  int i = node->ival;
+  
+    switch(i){
+  
+    case TYPE_INT:    return "i"; break;
+    case TYPE_BOOL:   return "b"; break;
+  
+    default:          return "??";
+    }
 }
 
 void printTree(ASTTREE tree)

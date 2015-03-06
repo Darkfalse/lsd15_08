@@ -35,7 +35,6 @@ comment   "{"[.*]"}"
 "not"        {return NOT;}
 "integer"    {return INT;}
 "boolean"    {return BOOL;}
-"void"       {return VOID;}
 "true"       {return BTRUE;}
 "false"      {return BFALSE;}
 "if"         {return IF;}
@@ -48,6 +47,8 @@ comment   "{"[.*]"}"
 "print"      {return PRINT;}
 "read"       {return READ;}
 
+
+":="         {return AFFECT;}
 "="          {return EQUAL;}
 "+"          {return PLUS;}
 "-"          {return MINUS;}
@@ -58,10 +59,11 @@ comment   "{"[.*]"}"
 "."          {return POINT;}
 ":"          {return COLON;}
 ";"          {return CPOINT;}
+"<="         {return STEQUAL;}
+">="         {return GTEQUAL;}
 ">"          {return GT;}
 "<"          {return ST;}
 "mod"        {return MODULO;}
-":="         {return AFFECT;}
 
 {id}         {
                 yylval.sval=(char*)calloc(strlen(yytext)+1,sizeof(char));

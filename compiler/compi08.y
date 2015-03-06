@@ -30,7 +30,7 @@ ASTTREE root;
 }
 
 %token BTRUE BFALSE ID NB
-%token INT BOOL VOID
+%token INT BOOL
 %token IF THEN ELSE FI WHILE DO OD
 %token WRITE READ PRINT
 %token PROGRAM PROC
@@ -40,15 +40,15 @@ ASTTREE root;
 
 %left AND OR NOT
 %left EQUAL
-%left GT ST
+%left GT ST GTEQUAL STEQUAL
 %left MODULO
 %left PLUS MINUS 
 %left TIMES
 %left LP RP
 %left AFFECT
 
-%type <tval> Program CodeBloc DeclVars DeclVar Code Instruction FinInstr
-%type <tval> Expr ExprI ExprB EndIf Id Nb
+%type <tval> Program CodeBloc DeclVars DeclVar Code Instruction
+%type <tval> ExprL ExprD EndIf Id Nb
 
 %%
 
@@ -59,60 +59,50 @@ CodeBloc : VAR DeclVars BEG Code END { $$ = createNode(AT_CODEB, 0, NULL, $2, $4
 ;
 
 DeclVars :                  { $$ = NULL;}
-         | DeclVars DeclVar { $$ = createNode(AT_DECLVARS, 0, NULL, $1, $2);}
+         | DeclVar DeclVars { $$ = createNode(AT_DECLVARS, 0, NULL, $1, $2);}
 ;
 
-DeclVar : Id COLON VOID CPOINT { $$ = createNode(AT_DECLVOID, 0, NULL, $1, NULL);}
-        | Id COLON INT CPOINT  { $$ = createNode(AT_DECLINT, 0, NULL, $1, NULL);}
-        | Id COLON BOOL CPOINT { $$ = createNode(AT_DECLBOOL, 0, NULL, $1, NULL);}
+DeclVar : Id COLON INT CPOINT  { $$ = createNode(AT_DECLINT, TYPE_INT, "i", $1, NULL);}
+        | Id COLON BOOL CPOINT { $$ = createNode(AT_DECLBOOL, TYPE_BOOL, "b", $1, NULL);}
 ;
 
-Code :                  { $$ = NULL; }
-     | Code Instruction { $$ = createNode(AT_CODE, 0, NULL, $1, $2);}
+Code :                         { $$ = NULL; }
+     | Instruction             { $$ = createNode(AT_LINSTR, 0, NULL, $1, NULL);}
+     | Instruction CPOINT Code { $$ = createNode(AT_CODE, 0, NULL, $1, $3);}
 ;
 
-Instruction : SKIP FinInstr         {$$ = NULL;}
-            | Id AFFECT Expr FinInstr {$$ = createNode(AT_AFFEXPR, 0, NULL, $1, $4);}
-            | Id AFFECT Id FinInstr   {$$ = createNode(AT_AFFID, 0, NULL, $1, $4);}
-            | READ ExprI FinInstr   {$$ = createNode(AT_OPREAD, 0, NULL, $2, NULL);}
-            | WRITE ExprI FinInstr  {$$ = createNode(AT_OPWRITE, 0, NULL, $2, NULL);}
-            | IF ExprB THEN EndIf   {$$ = createNode(AT_OPIF, 0, NULL, $2, $4);}
-            | WHILE Expr DO Code OD {$$ = createNode(AT_OPWHILE, 0, NULL, $2, $4);}
+Instruction : SKIP                  {$$ = NULL;}
+            | ExprL AFFECT ExprD    {$$ = createNode(AT_AFFEXPR, 0, NULL, $1, $3);}
+            | READ ExprD            {$$ = createNode(AT_OPREAD, 0, NULL, $2, NULL);}
+            | WRITE ExprD           {$$ = createNode(AT_OPWRITE, 0, NULL, $2, NULL);}
+            | IF ExprD THEN EndIf   {$$ = createNode(AT_OPIF, 0, NULL, $2, $4);}
+            | WHILE ExprD DO Code OD {$$ = createNode(AT_OPWHILE, 0, NULL, $2, $4);}
 ;
 
-EndIf : Code FI           {$$ = createNode(AT_OPFI, 0, NULL, $1, NULL);}
-      | Code ELSE Code FI {$$ = createNode(AT_OPELSEFI, 0, NULL, $1, $3);}
+EndIf : Code ELSE Code FI {$$ = createNode(AT_OPELSEFI, 0, NULL, $1, $3);}
 ;
 
-FinInstr :        { $$ = NULL;}
-         | CPOINT { $$ = NULL;}
-;
-
-Expr : ExprI {$$ = $1;}
-     | ExprB {$$ = $1;}
+ExprL : Id    {$$ = $1;}
 ;
 
 //Expression Integer
-ExprI : Nb                 {$$ = $1;}
-      | ExprI PLUS ExprI   {$$ = createNode(AT_OPADD, 0, NULL, $1, $3);} 
-      | ExprI MINUS ExprI  {$$ = createNode(AT_OPSUB, 0, NULL, $1, $3);}
-      | ExprI TIMES ExprI  {$$ = createNode(AT_OPMUL, 0, NULL, $1, $3);}
-      | LP ExprI RP        {$$ = $2;}
-      | ExprI MODULO ExprI {$$ = createNode(AT_OPMOD, 0, NULL, $1, $3);}
-;
-
-//Expression Boolean
-ExprB : BFALSE               {$$ = createNode(AT_FALSE, 0, yylval.sval, NULL, NULL);}
-      | BTRUE                {$$ = createNode(AT_TRUE, 0, yylval.sval, NULL, NULL);}
-      | ExprB AND ExprB      {$$ = createNode(AT_OPBAND, 0, NULL, $1, $3);}
-      | ExprB OR ExprB       {$$ = createNode(AT_OPBOR, 0, NULL, $1, $3);}
-      | NOT ExprB            {$$ = createNode(AT_OPBNOT, 0, NULL, $2, NULL);}
-      | ExprB EQUAL ExprB    {$$ = createNode(AT_OPBEQUAL, 0, NULL, $1, $3);}
-      | LP ExprB RP          {$$ = $2;}
-      | ExprB GT ExprB       {$$ = createNode(AT_OPBGT, 0, NULL, $1, $3);}//GT= greater than '>'
-      | ExprB ST ExprB       {$$ = createNode(AT_OPBST, 0, NULL, $1, $3);}//ST= smaller than '<'
-      | ExprB ST EQUAL ExprB {$$ = createNode(AT_OPBSTEQ, 0, NULL, $1, $4);}
-      | ExprB GT EQUAL ExprB {$$ = createNode(AT_OPBGTEQ, 0, NULL, $1, $4);}
+ExprD : Nb                 {$$ = $1;}
+      | ExprL              {$$ = $1;}
+      | ExprD PLUS ExprD   {$$ = createNode(AT_OPADD, 0, NULL, $1, $3);} 
+      | ExprD MINUS ExprD  {$$ = createNode(AT_OPSUB, 0, NULL, $1, $3);}
+      | ExprD TIMES ExprD  {$$ = createNode(AT_OPMUL, 0, NULL, $1, $3);}
+      | LP ExprD RP        {$$ = $2;}
+      | ExprD MODULO ExprD {$$ = createNode(AT_OPMOD, 0, NULL, $1, $3);}
+      | BFALSE              {$$ = createNode(AT_FALSE, 0, yylval.sval, NULL, NULL);}
+      | BTRUE               {$$ = createNode(AT_TRUE, 1, yylval.sval, NULL, NULL);}
+      | ExprD AND ExprD     {$$ = createNode(AT_OPBAND, 0, NULL, $1, $3);}
+      | ExprD OR ExprD      {$$ = createNode(AT_OPBOR, 0, NULL, $1, $3);}
+      | NOT ExprD           {$$ = createNode(AT_OPBNOT, 0, NULL, $2, NULL);}
+      | ExprD EQUAL ExprD   {$$ = createNode(AT_OPBEQUAL, 0, NULL, $1, $3);}
+      | ExprD GT ExprD      {$$ = createNode(AT_OPBGT, 0, NULL, $1, $3);}//GT= greater than '>'
+      | ExprD ST ExprD      {$$ = createNode(AT_OPBST, 0, NULL, $1, $3);}//ST= smaller than '<'
+      | ExprD STEQUAL ExprD {$$ = createNode(AT_OPBSTEQ, 0, NULL, $1, $3);}
+      | ExprD GTEQUAL ExprD {$$ = createNode(AT_OPBGTEQ, 0, NULL, $1, $3);}
 ;
 
 Id : ID { $$ = createNode(AT_ID, 0, yylval.sval, NULL, NULL);}
