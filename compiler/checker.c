@@ -25,8 +25,8 @@ void error(const char* msg, ...){
 
 int getType(ASTTREE node){
     int t = node->type;
-    char* leftT;
-    char* rightT;
+    int leftT;
+    int rightT;
     switch(t){
     case AT_DECLINT:        return TYPE_INT; break;
     case AT_DECLBOOL:       return TYPE_BOOL; break;
@@ -38,7 +38,7 @@ int getType(ASTTREE node){
     case AT_OPMOD:
         leftT = getVarType(node->left);
         rightT = getVarType(node->right);
-        if(leftT != "i" || rightT != "i"){
+        if(leftT != TYPE_INT || rightT != TYPE_INT){
             error("Inccorect Int expression");
         }
         return TYPE_INT;
@@ -55,14 +55,14 @@ int getType(ASTTREE node){
     case AT_OPBSTEQ:
         leftT = getVarType(node->left);
         rightT = getVarType(node->right);
-        if(leftT != "b" || rightT != "b"){
+        if(leftT != TYPE_BOOL || rightT != TYPE_BOOL){
             error("Inccorect Bool expression");
         }
         return TYPE_INT;
         break;
     case AT_OPBNOT:
         leftT = getVarType(node->left);
-        if(leftT != "b"){
+        if(leftT != TYPE_BOOL){
             error("Inccorect Bool expression");
         }
         return TYPE_INT;
@@ -78,7 +78,7 @@ int getType(ASTTREE node){
         break;
     case AT_OPIF:
         leftT = getVarType(node->left);
-        if(leftT != "b"){
+        if(leftT != TYPE_BOOL){
             error("Inccorect If condittion");
         }
         return TYPE_BOOL;
