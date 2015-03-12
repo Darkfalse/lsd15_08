@@ -8,12 +8,12 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+
 #include "checker.h"
-#include "ast.h"
 
 extern void printTree(ASTTREE node);
 
-void errorMsg(const char* msg, ...){
+void errorMsg(const char* msg){
     fprintf(stderr, "KO\n");
     fprintf(stderr, "Type error:");
     va_list args;
@@ -31,8 +31,18 @@ int getType(ASTTREE node){
     int leftT;
     int rightT;
     switch(t){
-    case AT_DECLINT:        return TYPE_INT; break;
-    case AT_DECLBOOL:       return TYPE_BOOL; break;
+    case AT_DECLINT:
+        if(getTypeId(node->left) != TYPE_INT){
+            errorMsg("Id inccorrectly declared (int)");
+        }
+        return TYPE_INT;
+        break;
+    case AT_DECLBOOL:
+        if(getTypeId(node->left) != TYPE_BOOL){
+        	errorMsg("Id inccorrectly declared (bool)");
+        }
+        return TYPE_BOOL;
+        break;
     //expressionInt
     case AT_NB:             return TYPE_INT; break;
     case AT_OPADD:
@@ -63,7 +73,13 @@ int getType(ASTTREE node){
     case AT_OPBGTEQ:
     case AT_OPBSTEQ:
         leftT = getVarType(node->left);
+        if(leftT == -2){
+            leftT = getTypeId(node->left);
+        }
         rightT = getVarType(node->right);
+        if(rightT == -2){
+            rightT = getTypeId(node->right);
+        }
         if(leftT != TYPE_BOOL || rightT != TYPE_BOOL){
             errorMsg("Inccorrect Bool expression");
         }
@@ -71,8 +87,11 @@ int getType(ASTTREE node){
         break;
     case AT_OPBNOT:
         leftT = getVarType(node->left);
+        if(leftT == -2){
+            leftT = getTypeId(node->left);
+        }
         if(leftT != TYPE_BOOL){
-            errorMsg("Inccorrect Bool expression");
+            errorMsg("Inccorrect Bool expression (not)");
         }
         return TYPE_INT;
         break;
@@ -88,7 +107,7 @@ int getType(ASTTREE node){
     case AT_OPIF:
         leftT = getVarType(node->left);
         if(leftT != TYPE_BOOL){
-            errorMsg("Inccorrect If condittion");
+            errorMsg("Inccorrect If condition");
         }
         return TYPE_BOOL;
         break;
