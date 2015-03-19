@@ -41,8 +41,9 @@
 #define AT_AFFEXPR   30
 #define AT_AFFID     31
 #define AT_LINSTR    32
+#define AT_OPINV     33
 //toujours dernier root
-#define AT_ROOT      33
+#define AT_ROOT      34
 
 //type
 #define TYPE_INT     98

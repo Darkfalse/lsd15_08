@@ -88,6 +88,7 @@ ExprL : Id    {$$ = $1;}
 
 //Expression Integer
 ExprD : Nb                 {$$ = $1;}
+      | MINUS ExprD        {$$ = createNode(AT_OPINV, 0, NULL, $2, NULL);}
       | ExprL              {$$ = $1;}
       | ExprD PLUS ExprD   {$$ = createNode(AT_OPADD, 0, NULL, $1, $3);} 
       | ExprD MINUS ExprD  {$$ = createNode(AT_OPSUB, 0, NULL, $1, $3);}
@@ -156,7 +157,7 @@ int main()
   printf(";*** END printSymbolTable(..) +locations ***\n");
 
   printf(";*** BEGIN validType(..) ***\n");
-  //validType(root);
+  validType(root);
   printf(";*** END validType(..) ***\n");
 
   printf(";*** BEGIN PCodeGeneration ***\n");

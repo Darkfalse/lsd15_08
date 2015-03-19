@@ -42,6 +42,16 @@ int getType(ASTTREE node){
         break;
     //expressionInt
     case AT_NB:             return TYPE_INT; break;
+    case AT_OPINV:
+        leftT = getVarType(node->left);
+        if(leftT == -2){
+            leftT = getTypeId(node->left);
+        }
+        if(leftT != TYPE_INT){
+            errorMsg("Inccorrect Int négation");
+        }
+        return TYPE_INT;
+        break;
     case AT_OPADD:
     case AT_OPSUB:
     case AT_OPMUL:

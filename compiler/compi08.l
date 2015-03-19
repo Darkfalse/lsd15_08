@@ -17,7 +17,7 @@ int num_lines=1;
 
 %option noyywrap
 
-id        -?[A-Za-z][A-Za-z0-9]*
+id        [A-Za-z][A-Za-z0-9]*
 nbr       (0|-?[1-9][0-9]*)
 blank     [ \t]+
 comment   "{"[.*]"}"
