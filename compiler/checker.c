@@ -16,10 +16,7 @@ extern void printTree(ASTTREE node);
 void errorMsg(const char* msg){
     fprintf(stderr, "KO\n");
     fprintf(stderr, "Type error:");
-    va_list args;
-    va_start(args, msg);
-    vfprintf(stderr, msg, args);
-    va_end(args);
+    fprintf(stderr, msg);
     fprintf(stderr, "\n");
     exit(1);
 }

@@ -11,7 +11,7 @@
 #include "ast.h"
 #include "sym.h"
 #include "pcode.h"
-#include "checker.c"
+#include "checker.h"
 
 extern int num_lines;
 extern char* yytext;
