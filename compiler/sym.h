@@ -10,6 +10,7 @@
 struct _stitem {
   char* id;
   int location;
+  int type;
   
   struct _stitem* next;
 };
@@ -23,7 +24,7 @@ typedef STITEM * SYMTABLE;
 extern SYMTABLE createSymbolTable();
 extern void freeSymbolTable(SYMTABLE s);
 
-extern int addToSymbolTable(SYMTABLE s, char* name);
+extern int addToSymbolTable(SYMTABLE s, char* name, int type);
 extern int alreadyIsSymbol(SYMTABLE s, char* name);
 
 extern int computeLocations(SYMTABLE s);

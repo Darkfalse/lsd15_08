@@ -28,18 +28,6 @@ int getType(ASTTREE node){
     int leftT;
     int rightT;
     switch(t){
-    case AT_DECLINT:
-        if(getTypeId(node->left) != TYPE_INT){
-            errorMsg("Id inccorrectly declared (int)");
-        }
-        return TYPE_INT;
-        break;
-    case AT_DECLBOOL:
-        if(getTypeId(node->left) != TYPE_BOOL){
-        	errorMsg("Id inccorrectly declared (bool)");
-        }
-        return TYPE_BOOL;
-        break;
     //expressionInt
     case AT_NB:             return TYPE_INT; break;
     case AT_OPINV:
@@ -104,8 +92,11 @@ int getType(ASTTREE node){
         break;
     //instruction
     case AT_AFFEXPR:
-        leftT = getVarType(node->left);
+        leftT = getTypeId(node->left);
         rightT = getVarType(node->right);
+        if(rightT == -2){
+            rightT = getTypeId(node->right);
+        }
         if(leftT != rightT){
             errorMsg("Inccorrect Affect instruction");
         }
@@ -126,7 +117,7 @@ int getType(ASTTREE node){
 int getTypeId(ASTTREE node){
     int type = -1;
     ASTTREE nodeTemp = nodeRoot;
-    while(nodeTemp){
+    while(nodeTemp != NULL && node != NULL){
         if(node->type == AT_DECLINT && !(strcmp(nodeTemp->sval, node->sval))){
             return TYPE_INT;
         }
@@ -142,10 +133,10 @@ int getTypeId(ASTTREE node){
 }
 
 void validType(ASTTREE node){
-    if(nodeRoot != NULL){
+    if(nodeRoot != NULL && node != NULL){
         nodeRoot = node;
     }
-    while(node){
+    while(node != NULL){
         getType(node);
         validType(node->left);
         node = node->right;

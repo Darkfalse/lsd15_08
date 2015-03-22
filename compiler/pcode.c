@@ -5,10 +5,8 @@
  * H. Toussaint (hto@info.fundp.ac.be), 14/06/05
  */
 
-#include <stdio.h>
-
+#include <stdio.h> 
 #include <stdlib.h>
-
 #include "pcode.h"
 
 int fillSymbolTable(ASTTREE tree, SYMTABLE s)
@@ -19,7 +17,7 @@ int fillSymbolTable(ASTTREE tree, SYMTABLE s)
   if (tree->type == AT_ID)
     {
       if (!alreadyIsSymbol(s, tree->sval))
-	addToSymbolTable(s, tree->sval);
+	addToSymbolTable(s, tree->sval, tree->type);
     }
 
   fillSymbolTable(tree->left, s);

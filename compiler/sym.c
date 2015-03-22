@@ -11,6 +11,7 @@
 #include "sym.h"
 
 #define NO_LOC -1
+#define NO_TYPE -3
 
 STITEM * createSTNode()
 {
@@ -24,6 +25,7 @@ STITEM * createSTNode()
     }
 
   node->id = NULL;
+  node->type = NO_TYPE;
   node->location = NO_LOC;
   node->next = NULL;
 
@@ -63,7 +65,7 @@ int alreadyIsSymbol(SYMTABLE s, char* name)
   return (symbolLookup(s,name) == NULL) ? 0 : 1;
 }
 
-int addToSymbolTable(SYMTABLE s, char* name)
+int addToSymbolTable(SYMTABLE s, char* name, int type)
 {
   if (alreadyIsSymbol(s,name)) return 0;
   else 
@@ -71,6 +73,7 @@ int addToSymbolTable(SYMTABLE s, char* name)
       while (s->next != NULL) s = s->next;
       
       s->id = name;
+      s->type = type;
       s->next = createSTNode();
 
       return 1;
