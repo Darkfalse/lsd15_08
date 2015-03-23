@@ -1,8 +1,7 @@
-/* pcode.h
- *
- * part of the DEMO compiler
- *
- * H. Toussaint (hto@info.fundp.ac.be), 14/06/05
+/* Groupe 8
+ * Mertens Xavier
+ * Motte Josué
+ * 2015
  */
 
 #ifndef _PCODE_H

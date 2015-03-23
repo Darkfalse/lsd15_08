@@ -97,6 +97,18 @@ int computeLocations(SYMTABLE s)
   }
 }
 
+int getSymType(SYMTABLE s, char* name){
+  STITEM * node = symbolLookup(s, name);
+
+  if (node == NULL) return -1;
+  else{
+    if (node->type == NO_TYPE)
+      return -1;
+    else
+      return node->type;
+  }
+}
+
 int getLocation(SYMTABLE s, char* name)
 {
   STITEM * node = symbolLookup(s, name);

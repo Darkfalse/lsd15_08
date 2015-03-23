@@ -8,10 +8,11 @@
 #define TYPE_H
 
 #include "ast.h"
+#include "sym.h"
 
 extern void errrorMsg(char* msg);
-extern void validType(ASTTREE node);
-extern int getType(ASTTREE node);
-extern int getTypeId(ASTTREE node);
+extern void validType(ASTTREE node, SYMTABLE sym);
+extern int getType(ASTTREE node, SYMTABLE sym);
+extern int getTypeId(ASTTREE node, SYMTABLE sym);
 
 #endif

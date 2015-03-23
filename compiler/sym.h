@@ -28,6 +28,7 @@ extern int addToSymbolTable(SYMTABLE s, char* name, int type);
 extern int alreadyIsSymbol(SYMTABLE s, char* name);
 
 extern int computeLocations(SYMTABLE s);
+extern int getSymType(SYMTABLE s, char* name);
 extern int getLocation(SYMTABLE s, char* name);
 extern int getMaxMemoryUsage(SYMTABLE s);
 

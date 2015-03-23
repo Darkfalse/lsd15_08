@@ -63,8 +63,8 @@ DeclVars :                  { $$ = NULL;}
          | DeclVar DeclVars { $$ = createNode(AT_DECLVARS, 0, NULL, $1, $2);}
 ;
 
-DeclVar : Id COLON INT CPOINT  { $$ = createNode(AT_ID, TYPE_INT, NULL, $1, NULL);}
-        | Id COLON BOOL CPOINT { $$ = createNode(AT_ID, TYPE_BOOL, NULL, $1, NULL);}
+DeclVar : Id COLON INT CPOINT  { $$ = createNode(AT_DECLINT, TYPE_INT, NULL, $1, NULL);}
+        | Id COLON BOOL CPOINT { $$ = createNode(AT_DECLBOOL, TYPE_BOOL, NULL, $1, NULL);}
 ;
 
 Code :                         { $$ = NULL; }
@@ -157,7 +157,7 @@ int main()
   printf(";*** END printSymbolTable(..) +locations ***\n");
 
   printf(";*** BEGIN validType(..) ***\n");
-  validType(root);
+  validType(root,sym);
   printf(";*** END validType(..) ***\n");
 
   printf(";*** BEGIN PCodeGeneration ***\n");
