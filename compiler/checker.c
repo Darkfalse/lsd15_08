@@ -30,11 +30,12 @@ int getType(ASTTREE node, SYMTABLE sym){
     case AT_NB:             return TYPE_INT; break;
     case AT_OPINV:
         leftT = getVarType(node->left);
-        if(leftT == -2){
+        if(leftT == AT_ID){
             leftT = getTypeId(node->left, sym);
         }
         if(leftT != TYPE_INT){
             errorMsg("Inccorrect Int négation");
+            return -1;
         }
         return TYPE_INT;
         break;
@@ -43,15 +44,16 @@ int getType(ASTTREE node, SYMTABLE sym){
     case AT_OPMUL:
     case AT_OPMOD:
         leftT = getVarType(node->left);
-        if(leftT == -2){
+        if(leftT == AT_ID){
             leftT = getTypeId(node->left, sym);
         }
         rightT = getVarType(node->right);
-        if(rightT == -2){
+        if(rightT == AT_ID){
             rightT = getTypeId(node->right, sym);
         }
         if(leftT != TYPE_INT || rightT != TYPE_INT){
             errorMsg("Inccorrect Int expression");
+            return -1;
         }
         return TYPE_INT;
         break;
@@ -66,25 +68,27 @@ int getType(ASTTREE node, SYMTABLE sym){
     case AT_OPBGTEQ:
     case AT_OPBSTEQ:
         leftT = getVarType(node->left);
-        if(leftT == -2){
+        if(leftT == AT_ID){
             leftT = getTypeId(node->left, sym);
         }
         rightT = getVarType(node->right);
-        if(rightT == -2){
+        if(rightT == AT_ID){
             rightT = getTypeId(node->right, sym);
         }
         if(leftT != TYPE_BOOL || rightT != TYPE_BOOL){
             errorMsg("Inccorrect Bool expression");
+            return -1;
         }
         return TYPE_INT;
         break;
     case AT_OPBNOT:
         leftT = getVarType(node->left);
-        if(leftT == -2){
+        if(leftT == AT_ID){
             leftT = getTypeId(node->left, sym);
         }
         if(leftT != TYPE_BOOL){
             errorMsg("Inccorrect Bool expression (not)");
+            return -1;
         }
         return TYPE_INT;
         break;
@@ -92,11 +96,12 @@ int getType(ASTTREE node, SYMTABLE sym){
     case AT_AFFEXPR:
         leftT = getTypeId(node->left, sym);
         rightT = getVarType(node->right);
-        if(rightT == -2){
+        if(rightT == AT_ID){
             rightT = getTypeId(node->right, sym);
         }
-        if(leftT != rightT){
+        if(leftT == -1 || leftT == -3 || rightT == -1 || rightT == -3 || leftT != rightT){ //peu peut-être être simplifier
             errorMsg("Inccorrect Affect instruction");
+            return -1;
         }
         return leftT;
         break;
@@ -104,6 +109,7 @@ int getType(ASTTREE node, SYMTABLE sym){
         leftT = getVarType(node->left);
         if(leftT != TYPE_BOOL){
             errorMsg("Inccorrect If condition");
+            return -1;
         }
         return TYPE_BOOL;
         break;
@@ -114,7 +120,7 @@ int getType(ASTTREE node, SYMTABLE sym){
 
 int getTypeId(ASTTREE node, SYMTABLE sym){
     int type = -1;
-    while(node != NULL && sym != NULL){
+    if(node != NULL && sym != NULL){
         type = getSymType(sym, node->sval);
     }
 
