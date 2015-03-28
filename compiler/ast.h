@@ -7,6 +7,8 @@
 #ifndef AST_H
 #define AST_H
 
+#define NO_TYPE -3
+
 // do not change values below, or also edit humanReadableNodeType() in ast.c
 #define AT_NB         0
 #define AT_OPWRITE    1

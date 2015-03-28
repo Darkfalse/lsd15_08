@@ -53,7 +53,7 @@ ASTTREE root;
 
 %%
 
-Program : PROGRAM Id CPOINT CodeBloc POINT { root = createNode(AT_ROOT, 0, NULL, $2, $4); }
+Program : PROGRAM Id CPOINT CodeBloc POINT { root = createNode(AT_ROOT, 0, NULL, $2, $4);}
 ;
 
 CodeBloc : VAR DeclVars BEG Code END { $$ = createNode(AT_CODEB, 0, NULL, $2, $4);}
@@ -86,7 +86,7 @@ EndIf : Code ELSE Code FI {$$ = createNode(AT_OPELSEFI, 0, NULL, $1, $3);}
 ExprL : Id    {$$ = $1;}
 ;
 
-//Expression Integer
+//Expression droite
 ExprD : Nb                 {$$ = $1;}
       | MINUS ExprD        {$$ = createNode(AT_OPINV, 0, NULL, $2, NULL);}
       | ExprL              {$$ = $1;}
@@ -95,8 +95,8 @@ ExprD : Nb                 {$$ = $1;}
       | ExprD TIMES ExprD  {$$ = createNode(AT_OPMUL, 0, NULL, $1, $3);}
       | LP ExprD RP        {$$ = $2;}
       | ExprD MODULO ExprD {$$ = createNode(AT_OPMOD, 0, NULL, $1, $3);}
-      | BFALSE              {$$ = createNode(AT_FALSE, 0, yylval.sval, NULL, NULL);}
-      | BTRUE               {$$ = createNode(AT_TRUE, 1, yylval.sval, NULL, NULL);}
+      | BFALSE              {$$ = createNode(AT_FALSE, 0, NULL, NULL, NULL);}
+      | BTRUE               {$$ = createNode(AT_TRUE, 1, NULL, NULL, NULL);}
       | ExprD AND ExprD     {$$ = createNode(AT_OPBAND, 0, NULL, $1, $3);}
       | ExprD OR ExprD      {$$ = createNode(AT_OPBOR, 0, NULL, $1, $3);}
       | NOT ExprD           {$$ = createNode(AT_OPBNOT, 0, NULL, $2, NULL);}

@@ -9,9 +9,9 @@
 #include <stdlib.h>
 
 #include "sym.h"
+#include "ast.h"
 
 #define NO_LOC -1
-#define NO_TYPE -3
 
 STITEM * createSTNode()
 {
@@ -55,8 +55,8 @@ STITEM * symbolLookup(SYMTABLE s, char* name)
     if (s->next == NULL) return NULL;
     else
       {
-	if (strcmp(s->id, name) == 0) return s;
-	else return symbolLookup(s->next, name);
+	      if (name != NULL && strcmp(s->id, name) == 0) return s;
+	      else return symbolLookup(s->next, name);
       }
 }
 
@@ -98,15 +98,21 @@ int computeLocations(SYMTABLE s)
 }
 
 int getSymType(SYMTABLE s, char* name){
-  STITEM * node = symbolLookup(s, name);
 
-  if (node == NULL) return -1;
-  else{
-    if (node->type == NO_TYPE)
-      return -1;
-    else
-      return node->type;
+  if(name != NULL){
+    STITEM * node = symbolLookup(s, name);
+
+    if (node == NULL) return -1;
+    else{
+      if (node->type == NO_TYPE)
+        return NO_TYPE;
+      else
+
+        return node->type;
+    }
   }
+
+  return NO_TYPE;
 }
 
 int getLocation(SYMTABLE s, char* name)
@@ -117,8 +123,8 @@ int getLocation(SYMTABLE s, char* name)
   else 
     {
       if (node->location == NO_LOC)
-	// need to compute locations before using them
-	computeLocations(s);
+	      // need to compute locations before using them
+	      computeLocations(s);
 
       return node->location;
     }
@@ -146,7 +152,7 @@ void printSymbolTable(SYMTABLE s)
 	  printf("; [%p] id=", s);  
 	  if (s->id == NULL) printf("NULL");
 	  else printf("'%s'", s->id);
-	  printf(", location=%d, next=%p\n", s->location, s->next);
+	  printf(", location=%d, type=%d, next=%p\n", s->location, s->type, s->next);
 	  
 	  printSymbolTable(s->next);
 	}

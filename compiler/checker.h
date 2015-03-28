@@ -11,7 +11,7 @@
 #include "sym.h"
 
 extern void errrorMsg(char* msg);
-extern void validType(ASTTREE node, SYMTABLE sym);
+extern int validType(ASTTREE node, SYMTABLE sym);
 extern int getType(ASTTREE node, SYMTABLE sym);
 extern int getTypeId(ASTTREE node, SYMTABLE sym);
 

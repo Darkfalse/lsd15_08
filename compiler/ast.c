@@ -103,19 +103,21 @@ char* humanReadableNodeType(int type)
 
 int getVarType(ASTTREE node)
 {
-  int i = node->type;
-  
-  switch(i){
+  if(node != NULL){
+    int i = node->type;
+    switch(i){
 
-  case AT_DECLINT:    return TYPE_INT; break;
-  case AT_DECLBOOL:   return TYPE_BOOL; break;
-  case AT_NB:         return TYPE_INT; break;
-  case AT_TRUE:       return TYPE_BOOL; break;
-  case AT_FALSE:      return TYPE_BOOL; break;
-  case AT_ID:         return AT_ID; break;
+    case AT_DECLINT:    return TYPE_INT; break;
+    case AT_DECLBOOL:   return TYPE_BOOL; break;
+    case AT_NB:         return TYPE_INT; break;
+    case AT_TRUE:       return TYPE_BOOL; break;
+    case AT_FALSE:      return TYPE_BOOL; break;
+    case AT_ID:         return AT_ID; break;
 
-  default:            return -1;
+    default:            return NO_TYPE;
+    }
   }
+  return NO_TYPE;
 }
 
 void printTree(ASTTREE tree)

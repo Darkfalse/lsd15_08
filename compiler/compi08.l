@@ -16,13 +16,18 @@ int num_lines=1;
 %}
 
 %option noyywrap
+%x comment
 
 id        [A-Za-z][A-Za-z0-9]*
 nbr       (0|-?[1-9][0-9]*)
 blank     [ \t]+
-comment   "{"[.*]"}"
+comment   {[\n.]*}
 
 %%
+"{"          {BEGIN(comment);}
+<comment>"}" {BEGIN(INITIAL);}
+<comment>.   {}
+
 "program"    {return PROGRAM;}
 "var"        {return VAR;}
 "begin"      {return BEG;}
@@ -79,8 +84,6 @@ comment   "{"[.*]"}"
 "\n"         {++num_lines;}
 
 {blank}      {/*On passe*/}
-
-{comment}    {/*On passe aussi*/}
 
 .            {
                 fprintf(stderr,"KO\n");

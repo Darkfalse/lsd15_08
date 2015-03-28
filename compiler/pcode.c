@@ -13,11 +13,28 @@ int fillSymbolTable(ASTTREE tree, SYMTABLE s)
   if (tree == NULL)
     return 0;
 
-  if (tree->type == AT_ID)
-    {
-      if (!alreadyIsSymbol(s, tree->sval))
-	addToSymbolTable(s, tree->sval, tree->type);
+  if(tree->type == AT_DECLINT){
+    if (!alreadyIsSymbol(s, tree->left->sval))
+      addToSymbolTable(s, tree->left->sval, TYPE_INT);
+    else{
+      fprintf(stderr,"KO\n");
+      printf("ERROR : id '%s' already declared\n", tree->left->sval);
+      exit(1);
     }
+  }
+  else if(tree->type == AT_DECLBOOL){
+    if (!alreadyIsSymbol(s, tree->left->sval))
+      addToSymbolTable(s, tree->left->sval, TYPE_BOOL);
+    else{
+      fprintf(stderr,"KO\n");
+      printf("ERROR : id '%s' already declared\n", tree->left->sval);
+      exit(1);
+    }
+  }
+  else if (tree->type == AT_ID){
+    if (!alreadyIsSymbol(s, tree->sval))
+      addToSymbolTable(s, tree->sval, tree->type);
+  }
 
   fillSymbolTable(tree->left, s);
   fillSymbolTable(tree->right, s);

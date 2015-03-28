@@ -16,7 +16,7 @@ extern void printTree(ASTTREE node);
 void errorMsg(const char* msg){
     fprintf(stderr, "KO\n");
     fprintf(stderr, "Type error:");
-    fprintf(stderr, msg);
+    //fprintf(stderr, msg);	//ne fonctionne pas sous ubuntu
     fprintf(stderr, "\n");
     exit(1);
 }
@@ -34,9 +34,10 @@ int getType(ASTTREE node, SYMTABLE sym){
             leftT = getTypeId(node->left, sym);
         }
         if(leftT != TYPE_INT){
-            errorMsg("Inccorrect Int négation");
+            errorMsg("Inccorrect Int négation\n");
             return -1;
         }
+        printf("OPINV");
         return TYPE_INT;
         break;
     case AT_OPADD:
@@ -52,14 +53,17 @@ int getType(ASTTREE node, SYMTABLE sym){
             rightT = getTypeId(node->right, sym);
         }
         if(leftT != TYPE_INT || rightT != TYPE_INT){
-            errorMsg("Inccorrect Int expression");
+            errorMsg("Inccorrect Int expression\n");
             return -1;
         }
+        printf("OP add|sub|mul|mod\n");
         return TYPE_INT;
         break;
     //expressionBool
     case AT_FALSE: 
-    case AT_TRUE:           return TYPE_BOOL; break;
+    case AT_TRUE:
+        printf("AT true|false\n");
+        return TYPE_BOOL; break;
     case AT_OPBAND:
     case AT_OPBOR:
     case AT_OPBEQUAL:
@@ -76,21 +80,24 @@ int getType(ASTTREE node, SYMTABLE sym){
             rightT = getTypeId(node->right, sym);
         }
         if(leftT != TYPE_BOOL || rightT != TYPE_BOOL){
-            errorMsg("Inccorrect Bool expression");
+            errorMsg("Inccorrect Bool expression\n");
             return -1;
         }
-        return TYPE_INT;
+        printf("OP and|or|equal|greater|smaller|>=|<=\n");
+        return TYPE_BOOL;
         break;
+    case AT_OPIF:
     case AT_OPBNOT:
         leftT = getVarType(node->left);
         if(leftT == AT_ID){
             leftT = getTypeId(node->left, sym);
         }
         if(leftT != TYPE_BOOL){
-            errorMsg("Inccorrect Bool expression (not)");
+            errorMsg("Inccorrect Bool expression (not/if)\n");
             return -1;
         }
-        return TYPE_INT;
+        printf("OP if|not\n");
+        return TYPE_BOOL;
         break;
     //instruction
     case AT_AFFEXPR:
@@ -99,19 +106,12 @@ int getType(ASTTREE node, SYMTABLE sym){
         if(rightT == AT_ID){
             rightT = getTypeId(node->right, sym);
         }
-        if(leftT == -1 || leftT == -3 || rightT == -1 || rightT == -3 || leftT != rightT){ //peu peut-être être simplifier
-            errorMsg("Inccorrect Affect instruction");
+        if(leftT == NO_TYPE || rightT == NO_TYPE || leftT != rightT){ //peu peut-être être simplifier
+            errorMsg("Inccorrect Affect instruction\n");
             return -1;
         }
+        printf("AT_Affect\n");
         return leftT;
-        break;
-    case AT_OPIF:
-        leftT = getVarType(node->left);
-        if(leftT != TYPE_BOOL){
-            errorMsg("Inccorrect If condition");
-            return -1;
-        }
-        return TYPE_BOOL;
         break;
 
     default:     return -1;
@@ -119,32 +119,18 @@ int getType(ASTTREE node, SYMTABLE sym){
 }
 
 int getTypeId(ASTTREE node, SYMTABLE sym){
-    int type = -1;
+    int type = NO_TYPE;
     if(node != NULL && sym != NULL){
         type = getSymType(sym, node->sval);
     }
-
-    /*int type = -1;
-    ASTTREE nodeTemp = nodeRoot;
-    while(nodeTemp != NULL && node != NULL){
-        if(node->type == AT_DECLINT && !(strcmp(nodeTemp->sval, node->sval))){
-            return TYPE_INT;
-        }
-        else if(node->type == AT_DECLBOOL && !(strcmp(nodeTemp->sval, node->sval))){
-            return TYPE_BOOL;
-        }
-        else{
-            type = getTypeId(node->left);
-        }
-        nodeTemp = nodeTemp->right;
-    }*/
     return type;
 }
 
-void validType(ASTTREE node, SYMTABLE sym){
+int validType(ASTTREE node, SYMTABLE sym){
     while(node != NULL && sym != NULL){
         getType(node, sym);
         validType(node->left, sym);
         node = node->right;
     }
+    return 0;
 }
