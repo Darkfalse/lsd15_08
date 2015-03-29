@@ -1,0 +1,6 @@
+program test1101;
+var
+  i : integer;
+begin
+  read(i)
+end.

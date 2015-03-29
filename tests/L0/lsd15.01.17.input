@@ -1,0 +1,7 @@
+program test1117;
+var
+   int1 : integer;
+
+begin
+   int1 := true
+end.

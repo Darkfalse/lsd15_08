@@ -67,7 +67,7 @@ typedef struct astnode   ASTNODE;
 extern ASTTREE createNode(int type, int ival, char* sval, ASTTREE left, ASTTREE right);
 extern void freeNode(ASTTREE node);
 extern void freeTree(ASTTREE tree);
-
+extern int getVarType(ASTTREE node);
 extern void printTree(ASTTREE tree);
 
 #endif

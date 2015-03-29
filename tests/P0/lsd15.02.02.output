@@ -1,0 +1,8 @@
+READ : READ : WRITE : int 33
+
+WRITE : int -17
+
+WRITE : int -34
+
+WRITE : int 78
+

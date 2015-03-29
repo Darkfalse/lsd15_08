@@ -38,7 +38,11 @@ void freeNode(ASTTREE node)
 {
   if (node != NULL)
     {
-      if (node->sval != NULL) free(node->sval);
+      if (node->sval != NULL) {
+        printf(node->sval);
+        printf("\n");
+        free(node->sval);
+      }
       if (node->left != NULL) freeNode(node->left);
       if (node->right != NULL) freeNode(node->right);
 

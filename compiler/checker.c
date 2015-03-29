@@ -13,11 +13,12 @@
 
 extern void printTree(ASTTREE node);
 
-void errorMsg(const char* msg){
+void errorMsg(const char* msg, int node){
     fprintf(stderr, "KO\n");
-    fprintf(stderr, "Type error:");
-    //fprintf(stderr, msg);	//ne fonctionne pas sous ubuntu
-    fprintf(stderr, "\n");
+    printf("Type error:");
+    printf(msg);	//ne fonctionne pas sous ubuntu
+    printf("%d",node);
+    printf("\n");
     exit(1);
 }
 
@@ -33,9 +34,12 @@ int getType(ASTTREE node, SYMTABLE sym){
         if(leftT == AT_ID){
             leftT = getTypeId(node->left, sym);
         }
+        else if(leftT == NO_TYPE){
+            leftT = getType(node->left, sym);
+        }
         if(leftT != TYPE_INT){
-            errorMsg("Inccorrect Int négation\n");
-            return -1;
+            errorMsg("Inccorrect Int négation\n",node->type);
+            return 1;
         }
         printf("OPINV");
         return TYPE_INT;
@@ -43,29 +47,6 @@ int getType(ASTTREE node, SYMTABLE sym){
     case AT_OPADD:
     case AT_OPSUB:
     case AT_OPMUL:
-    case AT_OPMOD:
-        leftT = getVarType(node->left);
-        if(leftT == AT_ID){
-            leftT = getTypeId(node->left, sym);
-        }
-        rightT = getVarType(node->right);
-        if(rightT == AT_ID){
-            rightT = getTypeId(node->right, sym);
-        }
-        if(leftT != TYPE_INT || rightT != TYPE_INT){
-            errorMsg("Inccorrect Int expression\n");
-            return -1;
-        }
-        printf("OP add|sub|mul|mod\n");
-        return TYPE_INT;
-        break;
-    //expressionBool
-    case AT_FALSE: 
-    case AT_TRUE:
-        printf("AT true|false\n");
-        return TYPE_BOOL; break;
-    case AT_OPBAND:
-    case AT_OPBOR:
     case AT_OPBEQUAL:
     case AT_OPBGT:
     case AT_OPBST:
@@ -75,28 +56,87 @@ int getType(ASTTREE node, SYMTABLE sym){
         if(leftT == AT_ID){
             leftT = getTypeId(node->left, sym);
         }
+        else if(leftT == NO_TYPE){
+            leftT = getType(node->left, sym);
+        }
         rightT = getVarType(node->right);
         if(rightT == AT_ID){
             rightT = getTypeId(node->right, sym);
         }
-        if(leftT != TYPE_BOOL || rightT != TYPE_BOOL){
-            errorMsg("Inccorrect Bool expression\n");
-            return -1;
+        else if(rightT == NO_TYPE){
+            rightT = getType(node->right, sym);
         }
-        printf("OP and|or|equal|greater|smaller|>=|<=\n");
+        if(leftT != TYPE_INT || rightT != TYPE_INT){
+            errorMsg("Inccorrect Int expression\n",node->type);
+            return 1;
+        }
+        printf("OP add|sub|mul: %d\n", node->type);
+        if(t == AT_OPADD || t == AT_OPSUB || t == AT_OPMUL){
+            return TYPE_INT;
+        }
+        else{
+            return TYPE_BOOL;
+        }
+        break;
+    //expressionBool
+    case AT_FALSE: 
+    case AT_TRUE:
+        printf("AT true|false\n");
+        return TYPE_BOOL; break;
+    case AT_OPBAND:
+    case AT_OPBOR:
+        leftT = getVarType(node->left);
+        if(leftT == AT_ID){
+            leftT = getTypeId(node->left, sym);
+        }
+        else if(leftT == NO_TYPE){
+            leftT = getType(node->left, sym);
+        }
+        rightT = getVarType(node->right);
+        if(rightT == AT_ID){
+            rightT = getTypeId(node->right, sym);
+        }
+        else if(rightT == NO_TYPE){
+            rightT = getType(node->right, sym);
+        }
+        if(leftT != TYPE_BOOL || rightT != TYPE_BOOL){
+            errorMsg("Inccorrect Bool expression\n",node->type);
+            return 1;
+        }
+        printf("OP and|or|equal|greater|smaller|>=|<=: %d\n", node->type);
         return TYPE_BOOL;
         break;
+    case AT_OPREAD:
+    case AT_OPWRITE:
+        leftT = getVarType(node->left);
+        if(leftT == AT_ID){
+            leftT = getTypeId(node->left, sym);
+        }
+        else if(leftT == NO_TYPE){
+            leftT = getType(node->left, sym);
+        }
+        if(leftT != TYPE_INT){
+            errorMsg("Inccorrect Int expression (read/write)\n",node->type);
+            return 1;
+        }
+        printf("OP read|write: %d\n", node->type);
+        return TYPE_INT;
+        break;
     case AT_OPIF:
+    case AT_OPWHILE:
     case AT_OPBNOT:
         leftT = getVarType(node->left);
         if(leftT == AT_ID){
             leftT = getTypeId(node->left, sym);
         }
-        if(leftT != TYPE_BOOL){
-            errorMsg("Inccorrect Bool expression (not/if)\n");
-            return -1;
+        else if(leftT == NO_TYPE){
+            leftT = getType(node->left, sym);
         }
-        printf("OP if|not\n");
+        if(leftT != TYPE_BOOL){
+            errorMsg("Inccorrect Bool expression (not/if)\n",node->type);
+            return 1;
+        }
+        printf("OP if|not: %d\n", node->type);
         return TYPE_BOOL;
         break;
     //instruction
@@ -106,15 +146,18 @@ int getType(ASTTREE node, SYMTABLE sym){
         if(rightT == AT_ID){
             rightT = getTypeId(node->right, sym);
         }
-        if(leftT == NO_TYPE || rightT == NO_TYPE || leftT != rightT){ //peu peut-être être simplifier
-            errorMsg("Inccorrect Affect instruction\n");
-            return -1;
+        else if(rightT == NO_TYPE){
+            rightT = getType(node->right, sym);
         }
-        printf("AT_Affect\n");
+        if(leftT == NO_TYPE || leftT != rightT){
+            errorMsg("Inccorrect Affect instruction\n",node->type);
+            return 1;
+        }
+        printf("AT_Affect: %d\n", node->type);
         return leftT;
         break;
 
-    default:     return -1;
+    default:     return 1;
     }
 }
 

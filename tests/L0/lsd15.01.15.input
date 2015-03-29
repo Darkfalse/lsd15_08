@@ -1,0 +1,14 @@
+program test1115;
+var
+   var123 : integer;
+   bool1 : boolean;
+   abc : integer;
+   bool1 :boolean;
+begin 
+   read var123;
+   read abc;
+   write 33;
+   write -17;
+   write abc;
+   write var123
+end.

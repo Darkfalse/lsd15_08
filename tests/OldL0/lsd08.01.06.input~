@@ -1,0 +1,22 @@
+program test1105;
+var
+   int1 : integer;
+   int2 : integer;
+   bool1 : boolean;
+   bool2 : boolean;
+begin
+   bool1 := false;
+   bool2 := true;
+   bool2 := not bool1;
+   bool1 := bool1 or bool2;
+   bool2 := bool2 and bool1;
+   int1 := -1;
+   int2 := int1;
+   bool1 := int1 = int2;
+   int2 := 3 * int1;
+   bool2 := int1 > int2;
+   bool1 := int1 < int2;
+   int1 := 4 + 7 * 3;
+   int2 := int1 - int1;
+   int1 := -int2
+end.

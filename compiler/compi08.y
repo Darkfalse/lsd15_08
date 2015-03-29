@@ -33,23 +33,18 @@ ASTTREE root;
 %token BTRUE BFALSE ID NB
 %token INT BOOL
 %token IF THEN ELSE FI WHILE DO OD
-%token WRITE READ PRINT
+%token WRITE READ
+%token PLUS MINUS TIMES EQUAL AND OR NOT
+%token GT ST GTEQUAL STEQUAL
+%token LP RP
+%token AFFECT
 %token PROGRAM PROC
 %token VAR BEG END
 %token SKIP
 %token COMMA COLON POINT CPOINT
 
-%left AND OR NOT
-%left EQUAL
-%left GT ST GTEQUAL STEQUAL
-%left MODULO
-%left PLUS MINUS 
-%left TIMES
-%left LP RP
-%left AFFECT
-
 %type <tval> Program CodeBloc DeclVars DeclVar Code Instruction
-%type <tval> ExprL ExprD EndIf Id Nb
+%type <tval> ExprL ExprD EndIf Id //Nb
 
 %%
 
@@ -67,8 +62,7 @@ DeclVar : Id COLON INT CPOINT  { $$ = createNode(AT_DECLINT, TYPE_INT, NULL, $1,
         | Id COLON BOOL CPOINT { $$ = createNode(AT_DECLBOOL, TYPE_BOOL, NULL, $1, NULL);}
 ;
 
-Code :                         { $$ = NULL; }
-     | Instruction             { $$ = createNode(AT_LINSTR, 0, NULL, $1, NULL);}
+Code : Instruction             { $$ = createNode(AT_LINSTR, 0, NULL, $1, NULL);}
      | Instruction CPOINT Code { $$ = createNode(AT_CODE, 0, NULL, $1, $3);}
 ;
 
@@ -87,14 +81,13 @@ ExprL : Id    {$$ = $1;}
 ;
 
 //Expression droite
-ExprD : Nb                 {$$ = $1;}
+ExprD : NB                 {$$ = createNode(AT_NB, yylval.ival, NULL, NULL, NULL);}
       | MINUS ExprD        {$$ = createNode(AT_OPINV, 0, NULL, $2, NULL);}
       | ExprL              {$$ = $1;}
       | ExprD PLUS ExprD   {$$ = createNode(AT_OPADD, 0, NULL, $1, $3);} 
       | ExprD MINUS ExprD  {$$ = createNode(AT_OPSUB, 0, NULL, $1, $3);}
       | ExprD TIMES ExprD  {$$ = createNode(AT_OPMUL, 0, NULL, $1, $3);}
       | LP ExprD RP        {$$ = $2;}
-      | ExprD MODULO ExprD {$$ = createNode(AT_OPMOD, 0, NULL, $1, $3);}
       | BFALSE              {$$ = createNode(AT_FALSE, 0, NULL, NULL, NULL);}
       | BTRUE               {$$ = createNode(AT_TRUE, 1, NULL, NULL, NULL);}
       | ExprD AND ExprD     {$$ = createNode(AT_OPBAND, 0, NULL, $1, $3);}
@@ -110,8 +103,7 @@ ExprD : Nb                 {$$ = $1;}
 Id : ID { $$ = createNode(AT_ID, 0, yylval.sval, NULL, NULL);}
 ;
 
-Nb : NB { $$ = createNode(AT_NB, yylval.ival, NULL, NULL, NULL);}
-;
+//Nb : NB       { $$ = createNode(AT_NB, yylval.ival, NULL, NULL, NULL);};
 
 %%
 

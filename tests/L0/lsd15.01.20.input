@@ -1,0 +1,8 @@
+program test1119;
+var
+   int1 : integer;
+   bool1 : boolean;
+
+begin
+   int1 := 00123
+end.

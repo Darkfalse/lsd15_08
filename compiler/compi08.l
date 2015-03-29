@@ -19,7 +19,7 @@ int num_lines=1;
 %x comment
 
 id        [A-Za-z][A-Za-z0-9]*
-nbr       (0|-?[1-9][0-9]*)
+nbr       (0|[1-9][0-9]*)
 blank     [ \t]+
 comment   {[\n.]*}
 
@@ -49,7 +49,7 @@ comment   {[\n.]*}
 "while"      {return WHILE;}
 "do"         {return DO;}
 "od"         {return OD;}
-"print"      {return PRINT;}
+"write"      {return WRITE;}
 "read"       {return READ;}
 
 
@@ -68,7 +68,6 @@ comment   {[\n.]*}
 ">="         {return GTEQUAL;}
 ">"          {return GT;}
 "<"          {return ST;}
-"mod"        {return MODULO;}
 
 {id}         {
                 yylval.sval=(char*)calloc(strlen(yytext)+1,sizeof(char));

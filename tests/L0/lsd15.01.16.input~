@@ -1,0 +1,25 @@
+program test1116;
+var
+   int1 : integer;
+   int2 : integer;
+   int3 : integer;
+   int4 : integer;
+   int5 : integer;
+   bool1 : boolean;
+   bool2 : boolean;
+   bool3 : boolean;
+   bool4 : boolean;
+   bool5 : boolean;
+begin
+   {int1 := 12-34;}
+   int2 := 12+3*(4+2)-2+7--4*2;
+   int3 := int1+int2;
+   write int1;
+   write int2;
+   write int3;
+   bool1 := true;
+   bool2 := not(true and (false or true));
+   bool3 := not(bool1 and bool2);
+   bool4 := bool1 or (int4 <int5);
+   bool5 := false and (int5=int4)
+end.

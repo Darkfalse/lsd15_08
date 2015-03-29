@@ -1,0 +1,9 @@
+program test1102;
+var
+   int1 : integer;
+   bool1 : boolean;
+begin
+   bool1 := true;
+   int1 := 1;
+   skip
+end.

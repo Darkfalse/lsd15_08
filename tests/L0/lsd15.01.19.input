@@ -1,0 +1,9 @@
+program test1119;
+var
+   int1 : integer;
+   bool1 : boolean;
+
+begin
+   int1 := 12-34;
+   bool1 := int1
+end.
