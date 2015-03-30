@@ -43,7 +43,7 @@ ASTTREE root;
 %token SKIP
 %token COMMA COLON POINT CPOINT
 
-%type <tval> Program CodeBloc DeclVars DeclVar Code Instruction
+%type <tval> Program CodeBloc DeclVars DeclVar Code CodeIf Instruction
 %type <tval> ExprL ExprD EndIf Id //Nb
 
 %%
@@ -66,28 +66,32 @@ Code : Instruction             { $$ = createNode(AT_LINSTR, 0, NULL, $1, NULL);}
      | Instruction CPOINT Code { $$ = createNode(AT_CODE, 0, NULL, $1, $3);}
 ;
 
-Instruction : SKIP                  {$$ = NULL;}
-            | ExprL AFFECT ExprD    {$$ = createNode(AT_AFFEXPR, 0, NULL, $1, $3);}
-            | READ ExprD            {$$ = createNode(AT_OPREAD, 0, NULL, $2, NULL);}
-            | WRITE ExprD           {$$ = createNode(AT_OPWRITE, 0, NULL, $2, NULL);}
-            | IF ExprD THEN EndIf   {$$ = createNode(AT_OPIF, 0, NULL, $2, $4);}
-            | WHILE ExprD DO Code OD {$$ = createNode(AT_OPWHILE, 0, NULL, $2, $4);}
+CodeIf :      { $$ = NULL;}
+       | Code { $$ = $1;}
 ;
 
-EndIf : Code ELSE Code FI {$$ = createNode(AT_OPELSEFI, 0, NULL, $1, $3);}
+Instruction : SKIP                     {$$ = NULL;}
+            | ExprL AFFECT ExprD       {$$ = createNode(AT_AFFEXPR, 0, NULL, $1, $3);}
+            | READ ExprD               {$$ = createNode(AT_OPREAD, 0, NULL, $2, NULL);}
+            | WRITE ExprD              {$$ = createNode(AT_OPWRITE, 0, NULL, $2, NULL);}
+            | IF ExprD THEN EndIf      {$$ = createNode(AT_OPIF, 0, NULL, $2, $4);}
+            | WHILE ExprD DO CodeIf OD {$$ = createNode(AT_OPWHILE, 0, NULL, $2, $4);}
+;
+
+EndIf : CodeIf ELSE CodeIf FI {$$ = createNode(AT_OPELSEFI, 0, NULL, $1, $3);}
 ;
 
 ExprL : Id    {$$ = $1;}
 ;
 
 //Expression droite
-ExprD : NB                 {$$ = createNode(AT_NB, yylval.ival, NULL, NULL, NULL);}
-      | MINUS ExprD        {$$ = createNode(AT_OPINV, 0, NULL, $2, NULL);}
-      | ExprL              {$$ = $1;}
-      | ExprD PLUS ExprD   {$$ = createNode(AT_OPADD, 0, NULL, $1, $3);} 
-      | ExprD MINUS ExprD  {$$ = createNode(AT_OPSUB, 0, NULL, $1, $3);}
-      | ExprD TIMES ExprD  {$$ = createNode(AT_OPMUL, 0, NULL, $1, $3);}
-      | LP ExprD RP        {$$ = $2;}
+ExprD : NB                  {$$ = createNode(AT_NB, yylval.ival, NULL, NULL, NULL);}
+      | MINUS ExprD         {$$ = createNode(AT_OPINV, 0, NULL, $2, NULL);}
+      | ExprL               {$$ = $1;}
+      | ExprD PLUS ExprD    {$$ = createNode(AT_OPADD, 0, NULL, $1, $3);} 
+      | ExprD MINUS ExprD   {$$ = createNode(AT_OPSUB, 0, NULL, $1, $3);}
+      | ExprD TIMES ExprD   {$$ = createNode(AT_OPMUL, 0, NULL, $1, $3);}
+      | LP ExprD RP         {$$ = $2;}
       | BFALSE              {$$ = createNode(AT_FALSE, 0, NULL, NULL, NULL);}
       | BTRUE               {$$ = createNode(AT_TRUE, 1, NULL, NULL, NULL);}
       | ExprD AND ExprD     {$$ = createNode(AT_OPBAND, 0, NULL, $1, $3);}

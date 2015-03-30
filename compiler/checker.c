@@ -13,11 +13,11 @@
 
 extern void printTree(ASTTREE node);
 
-void errorMsg(const char* msg, int node){
+void errorMsg(const char* msg, char* nodeT){
     fprintf(stderr, "KO\n");
     printf("Type error:");
     printf(msg);	//ne fonctionne pas sous ubuntu
-    printf("%d",node);
+    printf(nodeT);
     printf("\n");
     exit(1);
 }
@@ -38,7 +38,7 @@ int getType(ASTTREE node, SYMTABLE sym){
             leftT = getType(node->left, sym);
         }
         if(leftT != TYPE_INT){
-            errorMsg("Inccorrect Int négation\n",node->type);
+            errorMsg("Inccorrect Int négation\n",humanReadableNodeType(node->type));
             return 1;
         }
         printf("OPINV");
@@ -67,14 +67,15 @@ int getType(ASTTREE node, SYMTABLE sym){
             rightT = getType(node->right, sym);
         }
         if(leftT != TYPE_INT || rightT != TYPE_INT){
-            errorMsg("Inccorrect Int expression\n",node->type);
+            errorMsg("Inccorrect Int expression\n",humanReadableNodeType(node->type));
             return 1;
         }
-        printf("OP add|sub|mul: %d\n", node->type);
         if(t == AT_OPADD || t == AT_OPSUB || t == AT_OPMUL){
+            printf("%s\n", humanReadableNodeType(node->type));
             return TYPE_INT;
         }
         else{
+            printf("%s\n", humanReadableNodeType(node->type));
             return TYPE_BOOL;
         }
         break;
@@ -100,10 +101,10 @@ int getType(ASTTREE node, SYMTABLE sym){
             rightT = getType(node->right, sym);
         }
         if(leftT != TYPE_BOOL || rightT != TYPE_BOOL){
-            errorMsg("Inccorrect Bool expression\n",node->type);
+            errorMsg("Inccorrect Bool expression\n",humanReadableNodeType(node->type));
             return 1;
         }
-        printf("OP and|or|equal|greater|smaller|>=|<=: %d\n", node->type);
+        printf("%s\n", humanReadableNodeType(node->type));
         return TYPE_BOOL;
         break;
     case AT_OPREAD:
@@ -116,10 +117,10 @@ int getType(ASTTREE node, SYMTABLE sym){
             leftT = getType(node->left, sym);
         }
         if(leftT != TYPE_INT){
-            errorMsg("Inccorrect Int expression (read/write)\n",node->type);
+            errorMsg("Inccorrect Int expression (read/write)\n",humanReadableNodeType(node->type));
             return 1;
         }
-        printf("OP read|write: %d\n", node->type);
+        printf("%s\n", humanReadableNodeType(node->type));
         return TYPE_INT;
         break;
     case AT_OPIF:
@@ -133,10 +134,10 @@ int getType(ASTTREE node, SYMTABLE sym){
             leftT = getType(node->left, sym);
         }
         if(leftT != TYPE_BOOL){
-            errorMsg("Inccorrect Bool expression (not/if)\n",node->type);
+            errorMsg("Inccorrect Bool expression (not/if)\n",humanReadableNodeType(node->type));
             return 1;
         }
-        printf("OP if|not: %d\n", node->type);
+        printf("%s\n", humanReadableNodeType(node->type));
         return TYPE_BOOL;
         break;
     //instruction
@@ -150,10 +151,10 @@ int getType(ASTTREE node, SYMTABLE sym){
             rightT = getType(node->right, sym);
         }
         if(leftT == NO_TYPE || leftT != rightT){
-            errorMsg("Inccorrect Affect instruction\n",node->type);
+            errorMsg("Inccorrect Affect instruction\n",humanReadableNodeType(node->type));
             return 1;
         }
-        printf("AT_Affect: %d\n", node->type);
+        printf("AT_Affect");
         return leftT;
         break;
 

@@ -39,8 +39,7 @@ void freeNode(ASTTREE node)
   if (node != NULL)
     {
       if (node->sval != NULL) {
-        printf(node->sval);
-        printf("\n");
+        printf("freeId='%s'\n", node->sval);
         free(node->sval);
       }
       if (node->left != NULL) freeNode(node->left);
@@ -52,7 +51,7 @@ void freeNode(ASTTREE node)
 
 void freeTree(ASTTREE tree) // idem above but top root is static
 {
-  if (tree != NULL)
+  if (tree != NULL) 
     {
       if (tree->sval != NULL) free(tree->sval);
       if (tree->left != NULL) freeNode(tree->left);
@@ -96,7 +95,7 @@ char* humanReadableNodeType(int type)
   case AT_ID:       return "AT_ID"; break;
   case AT_VAR:      return "AT_VAR"; break;
   case AT_AFFEXPR:  return "AT_AFFEXPR"; break;
-  case AT_AFFID:    return "AT_AFFID"; break;
+  //case AT_AFFID:    return "AT_AFFID"; break;
   case AT_LINSTR:   return "AT_LINSTR"; break;
   case AT_OPINV:    return "AT_OPINV"; break;
   case AT_ROOT:     return "AT_ROOT"; break;

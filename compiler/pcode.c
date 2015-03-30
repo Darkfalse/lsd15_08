@@ -101,15 +101,15 @@ int pcodeGenValue(ASTTREE tree, SYMTABLE s)
   case AT_ID: // variable
     location = getLocation(s, tree->sval);
     if (location < 0)
-      {
-	// this should NOT happen, since it will cause havoc on address space
-	fprintf(stderr,"KO\n");
-	printf("ERROR : (!!) pcodeGenValue : VAR '%s' has no location\n", tree->sval);
-	exit(1);
-      }
+    {
+	    // this should NOT happen, since it will cause havoc on address space
+	    fprintf(stderr,"KO\n");
+	    printf("ERROR : (!!) pcodeGenValue : VAR '%s' has no location\n", tree->sval);
+	    exit(1);
+    }
     else 
       printf("; loading VALUE of variable '%s'\n", tree->sval);
-      printf("lda i 0 %d\nind i\n",location);
+    printf("lda i 0 %d\nind i\n",location);
     break;
 
   case AT_NB: // raw number
@@ -141,7 +141,7 @@ int pcodeGenValue(ASTTREE tree, SYMTABLE s)
     printf("; end of the multiplication %d\n", label);
     break;
 
-  case AT_OPPRINT: // print command
+  case AT_OPWRITE: // write command
     printf("\n; begin of print %d\n", label);
     pcodeGenValue(tree->left, s);
     printf("prin\n");
@@ -155,7 +155,7 @@ int pcodeGenValue(ASTTREE tree, SYMTABLE s)
     printf("; end of read %d\n", label);
     break;
 
-  case AT_OPAFF:
+  case AT_AFFEXPR:
     printf("\n; begin of affectation %d\n", label);
     pcodeGenAddress(tree->left, s);
     pcodeGenValue(tree->right, s);

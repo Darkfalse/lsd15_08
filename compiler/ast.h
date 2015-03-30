@@ -38,7 +38,7 @@
 #define AT_OPBST     25
 #define AT_OPBGTEQ   26
 #define AT_OPBSTEQ   27
-#define AT_ID        28
+//#define AT_ID        28
 #define AT_VAR       29
 #define AT_AFFEXPR   30
 #define AT_AFFID     31
@@ -67,6 +67,7 @@ typedef struct astnode   ASTNODE;
 extern ASTTREE createNode(int type, int ival, char* sval, ASTTREE left, ASTTREE right);
 extern void freeNode(ASTTREE node);
 extern void freeTree(ASTTREE tree);
+extern char* humanReadableNodeType(int type);
 extern int getVarType(ASTTREE node);
 extern void printTree(ASTTREE tree);
 
