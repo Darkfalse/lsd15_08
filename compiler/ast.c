@@ -95,9 +95,9 @@ char* humanReadableNodeType(int type)
   case AT_ID:       return "AT_ID"; break;
   case AT_VAR:      return "AT_VAR"; break;
   case AT_AFFEXPR:  return "AT_AFFEXPR"; break;
-  //case AT_AFFID:    return "AT_AFFID"; break;
   case AT_LINSTR:   return "AT_LINSTR"; break;
   case AT_OPINV:    return "AT_OPINV"; break;
+  case AT_PROC:     return "AT_PROC"; break;
   case AT_ROOT:     return "AT_ROOT"; break;
 
   default :         return "??";

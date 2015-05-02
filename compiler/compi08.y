@@ -34,16 +34,20 @@ ASTTREE root;
 %token INT BOOL
 %token IF THEN ELSE FI WHILE DO OD
 %token WRITE READ
-%token PLUS MINUS TIMES EQUAL AND OR NOT
-%token GT ST GTEQUAL STEQUAL
-%token LP RP
 %token AFFECT
 %token PROGRAM PROC
 %token VAR BEG END
 %token SKIP
 %token COMMA COLON POINT CPOINT
 
-%type <tval> Program CodeBloc DeclVars DeclVar Code CodeIf Instruction
+%left NOT
+%left AND OR
+%left EQUAL GT ST GTEQUAL STEQUAL
+%left PLUS MINUS
+%left TIMES
+%left LP RP
+
+%type <tval> Program CodeBloc DeclVars DeclVar Code Instruction
 %type <tval> ExprL ExprD EndIf Id //Nb
 
 %%
@@ -60,25 +64,23 @@ DeclVars :                  { $$ = NULL;}
 
 DeclVar : Id COLON INT CPOINT  { $$ = createNode(AT_DECLINT, TYPE_INT, NULL, $1, NULL);}
         | Id COLON BOOL CPOINT { $$ = createNode(AT_DECLBOOL, TYPE_BOOL, NULL, $1, NULL);}
+        | PROC Id LP RP CPOINT CodeBloc CPOINT { $$ = createNode(AT_PROC, 0, NULL, NULL, $6);}
 ;
 
 Code : Instruction             { $$ = createNode(AT_LINSTR, 0, NULL, $1, NULL);}
      | Instruction CPOINT Code { $$ = createNode(AT_CODE, 0, NULL, $1, $3);}
 ;
 
-CodeIf :      { $$ = NULL;}
-       | Code { $$ = $1;}
+Instruction : SKIP                    {$$ = NULL;}
+            | ExprL LP RP             {$$ = createNode(AT_PROC, 0, NULL, NULL, NULL);}
+            | ExprL AFFECT ExprD      {$$ = createNode(AT_AFFEXPR, 0, NULL, $1, $3);}
+            | READ ExprD              {$$ = createNode(AT_OPREAD, 0, NULL, $2, NULL);}
+            | WRITE ExprD             {$$ = createNode(AT_OPWRITE, 0, NULL, $2, NULL);}
+            | IF ExprD THEN EndIf     {$$ = createNode(AT_OPIF, 0, NULL, $2, $4);}
+            | WHILE ExprD DO Code OD  {$$ = createNode(AT_OPWHILE, 0, NULL, $2, $4);}
 ;
 
-Instruction : SKIP                     {$$ = NULL;}
-            | ExprL AFFECT ExprD       {$$ = createNode(AT_AFFEXPR, 0, NULL, $1, $3);}
-            | READ ExprD               {$$ = createNode(AT_OPREAD, 0, NULL, $2, NULL);}
-            | WRITE ExprD              {$$ = createNode(AT_OPWRITE, 0, NULL, $2, NULL);}
-            | IF ExprD THEN EndIf      {$$ = createNode(AT_OPIF, 0, NULL, $2, $4);}
-            | WHILE ExprD DO CodeIf OD {$$ = createNode(AT_OPWHILE, 0, NULL, $2, $4);}
-;
-
-EndIf : CodeIf ELSE CodeIf FI {$$ = createNode(AT_OPELSEFI, 0, NULL, $1, $3);}
+EndIf : Code ELSE Code FI {$$ = createNode(AT_OPELSEFI, 0, NULL, $1, $3);}
 ;
 
 ExprL : Id    {$$ = $1;}

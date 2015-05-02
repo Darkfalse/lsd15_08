@@ -107,7 +107,6 @@ int getSymType(SYMTABLE s, char* name){
       if (node->type == NO_TYPE)
         return NO_TYPE;
       else
-
         return node->type;
     }
   }

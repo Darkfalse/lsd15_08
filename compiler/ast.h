@@ -38,14 +38,14 @@
 #define AT_OPBST     25
 #define AT_OPBGTEQ   26
 #define AT_OPBSTEQ   27
-//#define AT_ID        28
+#define AT_ID        28
 #define AT_VAR       29
 #define AT_AFFEXPR   30
-#define AT_AFFID     31
-#define AT_LINSTR    32
-#define AT_OPINV     33
+#define AT_LINSTR    31
+#define AT_OPINV     32
+#define AT_PROC      33
 //toujours dernier root
-#define AT_ROOT      34
+#define AT_ROOT      90
 
 //type
 #define TYPE_INT     98
