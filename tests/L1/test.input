@@ -1,0 +1,18 @@
+program test2102;
+var 
+   x : integer;
+   y : integer;
+   prod : integer;
+
+begin
+   read x;
+   read y;
+   prod := x*y;
+   if x*y =prod 
+          then write x;
+               write y;
+               write prod
+          else
+               write 0  
+   fi
+end.
